@@ -1,0 +1,91 @@
+Notes on what I've tried to do--
+
+This is really long, sorry, because I kept revising the plan....
+
+Goal- Take audio into openframeworks and analyze pitch. Adjust Arduino Wav Shield distortion based on this data, so that audio outputted will have a similar pitch. 
+
+First Plan-
+First I thought I would do this by getting Mic data through the Arduino to OpenFrameworks, but then I realized to analyze the audio data Openframeworks needed to recognize it as an audio device so I could call it when setting up the audio input. [The reason why I wanted to go through Arduino was because evenutally I want to make it wireless, communicating with OF on the computer through bluetooth] Since that seemed like a big hurdle I decided for this first version it will be wired, so I will get the mic data from the computer and into openframeworks directly. 
+
+Second Plan-
+3 Main parts:
+1.Audio in (Openframeworks pitch analysis) I don't want to read the pitch constantly so I should read only when a button is pressed. When the reading starts it should probably take an average out of 20 seconds of readings.    
+2.Communicate with Arduino to give analysis 
+3. Send audio back out with distortions. 
+
+Basically-
+ 
+//--------------------------------------------------------------
+
+//--------------------------------------------------------------
+void ofApp::digitalPinChanged(const int & pinNum) {
+      buttonState = ofToString(ard.getDigital(pinNum));
+      if(buttonState ==1){
+      cout<< "button high" << endl;
+      startPitchDetection();
+	}
+	else{
+	stopPitchShift();
+	}
+}
+
+//--------------------------------------------------------------
+
+void ofApp:: startPitchDetection();{
+
+	
+        startTimer --- //will need a timer library probably
+        if(Timer >= 10){
+        
+        do the pitch reading stuff....  
+	pitchValue = newPitchDetection(...);
+	
+	startPitchShift();
+        }
+}
+
+void ofApp::startPitchShift() {
+            //send pitch shift data to Arduino
+  
+} 
+
+
+3.Starting backwards, I got a wav shield for Arduino that is capable of distorting audio in realtime. After soldering together, installing library, formatting SD card, example code runs fine. They have theirs distorting based on the analogRead of a potentiometer, and mapping the values. So instead of reading potentiometer, I'll use the value I find from pitchDetection in OF.
+
+2.Tested communication with Arduino through firmata and serial on OF, both work fine. */ update, Serial makes more sense than firmata, since I am using libraries and firmata seems to only work with standard firmata on Arduino. This really changes structure of OF code, since it will now be based on reading and write bytes.
+   SO more like:
+
+	byte1= Serial.read;
+	if(byte1 == 'B'){
+        //button has been pushed!
+        startPitchDetection();
+	}
+	
+        //... after detection.........
+	pitchByte = pitchDectection;	
+	Serial.write(pitchBye);
+
+   
+1. Pitch analysis...started with installing the other fFT library (by Kyle McDonald) required a couple changes to work on linux, had to make sure I had installed FFTW library (sudo apt-get install libfftw3-dev) add line of code to config.make file (USER_LDFLAGS=-lfftw3f)and also copy src files from examples to an empty example app because they were generated for Mac. Got basic example running ok.
+
+Problem 1- Run a Pitch Detection example found online which uses Aubio
+
+I read that it was best to analyze pitch through 'aubio' so I downloaded several different aubio wrapper addons, none of which could compile due to 'undefined reference to new_fvec.' Checked to make sure aubio is uptodate, apt-cache search aubio, installed files found there, still get same error. tried to add USER_LDFLAGS=-laubio because that was the problem with fft addon. Now it compiles! I do a dance and try not to acknowledge the silly amount of time it took me to figure this out. This is just an empty example with fft and aubio addons, mind you, still no code.   
+
+Then I generated a new project with fft and aubio addons, and then added the code from the pitch example I found online. It threw errors for this line:
+pitch_output = new_aubio_pitchdetection(win_s, hop_s, channels, samplerate); 
+saying it should be (win_s, hop_s, channels, samplerate, type, mode); 
+[it was missing type, mode] and it was pointing to the pitchdetection.h file, which is included in aubio.h, which is included in the addon. SO I changed that and now I get undefined reference to 'new_aubio_pitchdetection' which I don't understand why because I can see it defined in pitchdetection.h . Can't figure out what's wrong here. (crying emoji) I would imagine it's a problem with headers but they look right to me... ! wah. Give up. 
+
+Problem 2- Get an approximation of pitch from frequency. 
+
+I'll go back to the fFT example, which is giving me frequency. So need to convert frequency to pitch. 
+On Open Frameworks forum Kyle McDonald wrote 
+
+"Frequency is a measurable physical phenomena, while pitch is a pyschoacoustic one. Given a single sine wave, we hear a single pitch at that frequency. Given multiple sine waves, we might identify the loudest one as the pitch. With a more complex sound, it's unclear what we will identify as the pitch, or whether we will even identify the sound as "pitched" at all.
+
+That said, finding the dominant frequency bin will give you some useful results for simple signals like whistling. Simply search the 257 bins for the largest value, and then do a transform from the bin number (index) to the bin's frequency center (described in my last post in this thread)
+
+If you don't need to know precise frequency, and just which "pitch class" a sound falls into, a simple pitch detection algorithm involves taking the 512 frequency bins and placing them in 12 pitch bins, and picking the strongest. "
+
+ 
