@@ -1,7 +1,3 @@
 [submodule "zaran"]
 	path = zaran
 	url = git://github.com/zlalvani/player-vs-sound.git
-
-[submodule "shawn test"]
-	path = shawn
-	url = git://github.com/shawnlawson/ShawnTestSubModule.git
