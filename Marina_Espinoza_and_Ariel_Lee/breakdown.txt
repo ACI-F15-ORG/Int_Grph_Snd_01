@@ -1,0 +1,24 @@
+Ariel Lee and Marina Espinoza
+Project Breakdown!!
+
+We wanted to make a bubble particle system that did the following:
+	- Spawn bubbles of random color, size, and velocity from the canvas center
+	- Clicking on any bubble will create a "pop" sound and make it disappear
+	- The pop sounds will depend on the visual properties of the bubbles
+		-> Size directly proportional to volume
+		-> Color affects frequency
+
+How we broke down the process:
+0. Designed a bubble class to hold properties like position, velocity, color, image, sound, etc...
+1. Made a collection of bubbles and make sure we were properly drawing / updating by iterating over the vector.
+2. Made the bubbles move
+3. Bubbles are deleted upon leaving the screen or user clicking
+4. Randomize the properties of bubbles on creation
+5. Associate sounds with the bubbles' properties - made the sound play on click 
+6. Make new bubbles spawn when old bubbles are deleted
+7. Create the flashing background using ping-ponging color lerp.
+
+INSTRUCTIONS:
+
+Put the .cpp and .h source files in the src folder of an OF application
+Put the image and sound file in bin/data
