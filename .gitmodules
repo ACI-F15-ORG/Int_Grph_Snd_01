@@ -4,3 +4,6 @@
 [submodule "kelly"]
 	path = kelly
 	url = https://github.com/kmichaelfox/vhtu
+[submodule "shawnmodule"]
+	path = shawnmodule
+	url = https://github.com/shawnlawson/shawnmodule.git
