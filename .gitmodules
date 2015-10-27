@@ -16,3 +16,9 @@
 [submodule "andrewfaulds2"]
 	path = andrewfaulds2
 	url = https://github.com/faulda/noisy-bouncy-fountain
+[submodule "rasmul2submodule"]
+	path = rasmul2submodule
+	url = https://github.com/rasmul2/rasmul2submodule
+[submodule "lokiRasmussen"]
+	path = lokiRasmussen
+	url = https://github.com/rasmul2/rasmul2submodule.git
