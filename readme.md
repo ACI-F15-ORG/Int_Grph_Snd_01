@@ -6,7 +6,7 @@
 
 1. See, Hear, Respond
 2. Breakdown
-3. Clone, Add, Commit, Push
+3. Turning In
 4. Read
 5. Read More
 
@@ -17,27 +17,44 @@ Combine Visual, Aural, and interactive elements. Completed projects will be proj
 #### 2. Breakdown
 Before getting code dirty, draw/write out the bits and pieces of what you think you'll need. What are the components? How should they connect? Is there an order to events? 
 
-#### 3. Clone, Add, Commit, Push
-First is to make your own repository of files and sync it to github. Then, Clone this assignment directory to your computer. From within the folder of the clone, use the terminal. Replace _remote-url_ with something like _https://github.com/shawnlawson/shawnmodule.git_ and _folder-name_ with _shawn_
+#### 3. Turning In
+First is to make your own repository of files and sync it to github. Then, Clone this assignment directory to your computer. From within the folder of the clone, use the terminal. 
+
+Make a branch, replace _your-branch-name_ with something unique, rcsid, etc.
 
 ```bash
-git submodule add remote-url folder-name
+git branch your-branch-name
+```
+Checkout _your-branch-name_ so that we're working in that branch.
+
+```bash
+git checkout your-branch-name
 ```
 
-Then you'll need to add and commit:
+Replace _remote-url_ with something like _https://github.com/shawnlawson/shawnmodule.git_ and _linked-folder-name_ with your name _shawnlawson_
+
+```bash
+git submodule add remote-url linked-folder-name
+```
+
+Then you'll need to add and commit.
 
 ```bash
 git commit -a -m 'adding submodule'
 ```
 
-Lastly, you'll need to push this back to the remote:
+You'll need to push your branch to the remote.
 
 ```bash
 git push
 ```
+From the github web interface for this assignment's repository you'll create a new pull request.
 
-__Warning__ you can only push if you're a member of our organization. And, do not delete anything from the repository before pushing. I've already fixed some deleted files. 
+Base will be master, compare will be _your-branch-name_
 
+Create the request. You shouldn't accept your own pull request. Someone else, me or another person, should review the request to make sure none of the other files in the repository were modified before accepting. Sort of like a checks and balances system. 
+
+__Warning__ you can only push if you're a member of our organization. And, do not delete anything from the repository before pushing.
 #### 4. Read
 In all of these, ski[p,m] the Processing parts. 
 
