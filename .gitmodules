@@ -22,3 +22,6 @@
 [submodule "lokiRasmussen"]
 	path = lokiRasmussen
 	url = https://github.com/rasmul2/rasmul2submodule.git
+[submodule "leying"]
+	path = leying
+	url = https://github.com/Kirstihly/ACI_2.git
