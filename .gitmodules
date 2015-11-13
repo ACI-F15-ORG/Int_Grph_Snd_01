@@ -25,3 +25,6 @@
 [submodule "leying"]
 	path = leying
 	url = https://github.com/Kirstihly/ACI_2.git
+[submodule "daviddominguez"]
+	path = daviddominguez
+	url = https://github.com/davidrpi/audiovisualizer
